@@ -17,12 +17,16 @@ function newVersionChosen() {
 newVersionChosen();
 
 chrome.webRequest.onHeadersReceived.addListener(response => {
-  let responseHeaders = response.responseHeaders;
   if (response.type === "main_frame" && response.url.match(/^https?:\/\/www\.elastic\.co.*reference/)
-    && !response.url.match(`reference/${esDocsVersion}`)
+    && !response.url.match(`reference/${esDocsVersion}`) && !response.url.match('noredirect')
     && response.initiator && response.initiator.match(/^https?:\/\/www\.google\.com/)) {
     return {
       redirectUrl: response.url.replace(/reference\/[^/]+/, `reference/${esDocsVersion}`),
+    };
+  } else if (response.statusLine === "HTTP/1.1 404" && response.url.match(`reference/${esDocsVersion}`)) {
+    return {
+      redirectUrl: response.url.replace(`reference/${esDocsVersion}`, 'reference/current')
+        .replace(/$/, '#noredirect'),
     };
   }
   return {};
