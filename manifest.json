@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "ElasticSearch Docs Version Hold",
+  "version": "0.1.0",
+  "description": "Hold a version on ElasticSearch documentation pages",
+  "author": "Ivan Greene",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "*://*.elastic.co/",
+    "*://*.google.com/",
+    "webRequest",
+    "webRequestBlocking",
+    "storage"
+  ],
+  "web_accessible_resources": [
+    "options.js"
+  ]
+}
